@@ -12,6 +12,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('task/', include('task.urls')),
+    path('comment/', include('comment.urls')),
     path('swagger/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
     path('redoc/', SpectacularRedocView.as_view(), name='redoc'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
