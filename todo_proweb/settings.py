@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # packages
     'rest_framework',
     'drf_spectacular',
+    'rest_framework_simplejwt',
 
     # local apps
     'task',
