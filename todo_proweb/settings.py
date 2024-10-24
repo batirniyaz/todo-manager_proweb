@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # local apps
     'task',
+    'comment',
 ]
 
 MIDDLEWARE = [
