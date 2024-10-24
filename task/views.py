@@ -8,21 +8,8 @@ from .serializers import TaskSerializer
 
 from rest_framework import status
 
-@extend_schema(
-    tags=['Tasks'],
-    summary="Retrieve a list of tasks",
-    description="This endpoint retrieves tasks filtered by status, due date, or specific year, month, and day.",
-    responses={
-        201: OpenApiResponse(description='Task created successfully'),
-        400: OpenApiResponse(description='Bad request, invalid input'),
-    },
-    auth={"basic": []},
-
-)
-
 
 class TaskListAPIView(APIView):
-    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         tags=['Tasks'],
@@ -178,8 +165,8 @@ class TaskListAPIView(APIView):
                                 "id": 1,
                                 "title": "New Task",
                                 "description": "Description of the task",
-                                "status": "P",  # Status: P (Pending), IP (In Progress), C (Completed)
-                                "due_date": "2024-10-25T12:00:00Z",  # Datetime in ISO 8601
+                                "status": "P",
+                                "due_date": "2024-10-25T12:00:00Z",
                                 "created_at": "2024-10-23T09:00:00Z",
                                 "updated_at": "2024-10-23T09:00:00Z"
                             }
