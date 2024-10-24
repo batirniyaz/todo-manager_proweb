@@ -347,7 +347,7 @@ class TaskDetailAPIView(APIView):
                 "msg": "Task updated successfully",
                 "data": serializer.data
             }
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
