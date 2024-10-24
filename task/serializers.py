@@ -6,10 +6,20 @@ from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    STATUS_CHOICES = [
+        ('P', 'Pending'),
+        ('IP', 'In Progress'),
+        ('C', 'Completed')
+    ]
+
+    status = serializers.ChoiceField(choices=STATUS_CHOICES)
+    due_date = serializers.DateTimeField()
+
+
     class Meta:
         model = Task
         fields = '__all__'
-        read_only_fields = ('id', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'created_at', 'updated_at', 'user')
 
     def validate_due_date(self, value): # noqa
         if value and value < timezone.now():
