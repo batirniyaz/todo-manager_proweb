@@ -18,10 +18,10 @@ class TaskListAPIView(APIView):
         parameters=[
             OpenApiParameter(name='status', description="Filter by task status ('P', 'IP', 'C')", required=False,
                              type=str, examples=[
-                    OpenApiExample('Pending', value='P'),
-                    OpenApiExample('In Progress', value='IP'),
-                    OpenApiExample('Completed', value='C')
-                ]),
+                                OpenApiExample('Pending', value='P'),
+                                OpenApiExample('In Progress', value='IP'),
+                                OpenApiExample('Completed', value='C')
+                                ]),
             OpenApiParameter(name='year', description="Filter by year of due date", required=False, type=int),
             OpenApiParameter(name='month', description="Filter by month of due date", required=False, type=int),
             OpenApiParameter(name='day', description="Filter by day of due date", required=False, type=int),
@@ -216,7 +216,7 @@ class TaskListAPIView(APIView):
         data = request.data
         serializer = TaskSerializer(data=data, context={'request': request})
         if serializer.is_valid():
-            task = serializer.save()
+            serializer.save()
             data = {
                 "status": "success",
                 "msg": "Task created successfully",
