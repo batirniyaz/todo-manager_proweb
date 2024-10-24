@@ -1,4 +1,5 @@
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter, OpenApiResponse
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,6 +8,12 @@ from .models import Task
 from .serializers import TaskSerializer
 
 from rest_framework import status
+
+
+class TaskListAPIViewPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class TaskListAPIView(APIView):
@@ -24,7 +31,9 @@ class TaskListAPIView(APIView):
                 ]),
             OpenApiParameter(name='year', description="Filter by year of due date", required=False, type=int),
             OpenApiParameter(name='month', description="Filter by month of due date", required=False, type=int),
-            OpenApiParameter(name='day', description="Filter by day of due date", required=False, type=int)
+            OpenApiParameter(name='day', description="Filter by day of due date", required=False, type=int),
+            OpenApiParameter(name='page', description="Page number", required=False, type=int),
+            OpenApiParameter(name='page_size', description="Number of items per page", required=False, type=int)
         ],
         responses={
             200: OpenApiResponse(
@@ -131,6 +140,15 @@ class TaskListAPIView(APIView):
                 except ValueError:
                     return Response({"msg": "Invalid day format"}, status=status.HTTP_400_BAD_REQUEST)
 
+            paginator = PageNumberPagination()
+            page_size = request.query_params.get('page_size', paginator.page_size)
+            paginator.page_size = page_size if page_size else paginator.page_size
+            page = paginator.paginate_queryset(tasks, request)
+
+            if page is not None:
+                serializer = TaskSerializer(page, many=True)
+                return paginator.get_paginated_response(serializer.data)
+
             serializer = TaskSerializer(tasks, many=True)
 
             data = {
@@ -139,7 +157,7 @@ class TaskListAPIView(APIView):
                 "data": serializer.data
             }
 
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
 
         except Task.DoesNotExist:
             return Response({"status": "error", "msg": "No tasks found"}, status=status.HTTP_404_NOT_FOUND)
