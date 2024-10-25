@@ -38,7 +38,7 @@ Simple test todo manager project to the PROWEB company. In this project I added 
 ## Installation
 1. Clone the repository
     ```bash
-    git clone https://github.com/batirniyaz/todo_proweb.git
+    git clone https://github.com/batirniyaz/todo-manager_proweb.git
     cd todo_proweb
     ```
 2. Create venv file
